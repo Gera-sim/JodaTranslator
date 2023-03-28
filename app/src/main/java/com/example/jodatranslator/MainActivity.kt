@@ -35,11 +35,32 @@ fun yodaTranslate(text: String) {
         })
 }
 
+fun morseTranslate(text: String) {
+    translationService
+        .translateToMorse(TranslationRequest(text))
+        .enqueue(object : Callback<TranslationResponse> {
+            override fun onResponse(call: Call<TranslationResponse>,
+                                    response: Response<TranslationResponse>) {
+                Log.d("TRANSLATION_LOG", "${response.body()?.contents?.text} in Morse code: ${response.body()?.contents?.translated}”)
+            }
+
+            override fun onFailure(call: Call<TranslationResponse>, t: Throwable) {
+            }
+
+        })
+}
+
+
+
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         yodaTranslate("Creating Android applications is very easy and interesting!")
+
+
+        morseTranslate("Hello")
     }
 }
